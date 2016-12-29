@@ -116,7 +116,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('serve', ['build','connect', 'watch']);
+  grunt.registerTask('serve', ['heroku','connect', 'watch']);
 	grunt.registerTask('beautify', ['jsbeautifier:update']);
   grunt.registerTask('heroku', [
     'clean', 'jsbeautifier:verify', 'jshint', 'concat', 'ngdocs' //'karma'
