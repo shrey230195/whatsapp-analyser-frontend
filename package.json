@@ -1,11 +1,11 @@
 {
-  "name": "angular-scroll-animate",
-  "description": "An Angular.js directive which allows you to perform any javascript actions (in the controller, or on the element) when an element is scrolled into, or out of, the users viewport, without any other dependencies.",
-  "homepage": "https://github.com/rpocklin/angular-scroll-animate",
-  "author": "Robert Pocklington <rpocklin@gmail.com>",
+  "name": "whatsapp-analyser",
+  "description": " Front-end of the app to analyse your whatsapp chats",
+  "homepage": "https://whatsapp-analyser.herokuapp.com",
+  "author": "Shrey dixit <shreydixit93@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/rpocklin/angular-scroll-animate.git"
+    "url": "https://github.com/shrey230195/whatsapp-analyser-frontend.git"
   },
   "main": "./dist/angular-scroll-animate.js",
   "keywords": [
@@ -36,7 +36,6 @@
     "grunt-karma": "~0.6.2",
     "grunt-karma-coveralls": "~2.3.0",
     "grunt-ngdocs": "^0.2.8",
-    "grunt-sass": "^0.16.1",
     "jshint-stylish": "~0.1.3",
     "karma": "~0.10.9",
     "karma-coverage": "~0.2.4",
