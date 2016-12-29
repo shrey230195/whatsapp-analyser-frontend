@@ -1,0 +1,495 @@
+<style>
+		.not-visible {
+			visibility: hidden;
+	  }
+	  	  html,body {
+			 height:100%;
+			  margin:0;
+			  text-align: center;
+			}
+
+			.content {
+			  height:100vh;
+			  min-height:100%;/*for mozilla*/
+			  padding: 3%;
+			}
+
+			html>body .content {
+			  height:100vh;
+			}		
+		.spacer{
+			height: 100px;
+		}
+		.rot-90{
+			-ms-transform: rotate(90deg); /* IE 9 */
+		    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+		    transform: rotate(90deg);
+		}
+		.in-shadow{
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+			padding: 2%;
+		}
+		#analysis-bar-left{
+			position: relative;
+		    width: 48%;
+		    /*height: 200px;*/
+		    
+		    float: left;
+		    
+		    /*margin-top: 5%;*/
+		    z-index: -100;
+		}
+		#analysis-bar-left .single-bar{
+			/*height: 15%;*/
+			/*border: 1px solid #000;*/
+			padding: 0px;
+			margin-top: 20px;
+			width: 100%;
+		}
+		#analysis-bar-right{
+			position: relative;
+		    width: 35%;
+		    float: left;
+		    
+		    /*margin-top: 5%;*/
+		    z-index: -100;
+		}
+		#analysis-bar-right .single-bar{
+			padding: 0px;
+			margin-top: 20px;
+			width: 100%;
+		}
+		#progress-bar-base {
+		    position: relative;
+		    margin-top: 3%;
+		    height: 15px;
+		    background-color: grey;
+		    float: left;
+		    width: 100%;
+		    z-index: -100;
+		}
+		#bar-left-1,#bar-left-3,#bar-left-2 {
+			float: right;
+		    /*position: absolute;*/
+		    width: 0%;
+		    height: 100%;
+		    background-color: black;
+		    transition:2.4s ease-in-out;
+		}
+		#bar-right-1 ,#bar-right-2,#bar-right-3{
+			float: left;
+		    /*position: absolute;*/
+		    width: 0%;
+		    height: 100%;
+		    background-color: black;
+		     transition:2.4s ease-in-out;
+		}
+		#avatar{
+			float: left;
+			position: relative;
+			width: 20px;
+			height: 350px;
+			border-radius: 1%;
+			/*border: 2px solid #000;*/
+			z-index: 100;
+			 
+
+		}
+		.float-right{
+			float: right;
+		}
+		#left-half {
+		   background-color:grey;
+		   width: 50%;
+		   position: absolute;
+		   left: 0px;
+		   height: 100%;
+		   overflow: hidden;
+		   border-radius: 20px 0 0 20px;
+		   margin-left: 1%;
+		   /*transform:rotate(10deg); */
+		   /*background-repeat: no-repeat;*/
+		   /*background-size: 80%;*/
+		   
+		}
+		#right-half {
+		   background-color:black; 
+		   width: 50%;
+		   position: absolute;
+		   right: 0px;
+		   height: 100%;
+		   overflow: hidden;
+		   border-radius: 0 20px 20px 0;
+		   background-repeat: no-repeat;
+		   margin-right: 1%;
+		   
+		   
+		}
+		/* Css spinner for loading */
+
+.loader-wrapper{
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	z-index: 999;
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 5px;
+}
+.css-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #444;
+  border-radius: 50%;
+  float: left;
+  margin: 0 5px;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  -webkit-animation: fx 1000ms ease infinite 0ms;
+          animation: fx 1000ms ease infinite 0ms;
+}
+.dot:nth-child(2) {
+  -webkit-animation: fx 1000ms ease infinite 300ms;
+          animation: fx 1000ms ease infinite 300ms;
+}
+.dot:nth-child(3) {
+  -webkit-animation: fx 1000ms ease infinite 600ms;
+          animation: fx 1000ms ease infinite 600ms;
+}
+
+
+
+</style>
+
+
+<div class="container-fluid">
+	<!-- <div class="jumbotron"> -->
+		<div class="content"> 
+			<div class="row">
+				<div class="col-md-12">
+					<h1>WHATSAPP CHAT ANALYSIS</h1>
+					<h2>{{senders[0]}} vs {{senders[1]}} </h2>
+				</div>
+			</div>
+			<div class="spacer col-md-12"></div>
+			<!-- <div class="loader-wrapper" ng-hide="isFetched">
+						<div class="css-spinner">
+							<div class="dot"></div>
+							<div class="dot"></div>
+							<div class="dot"></div>
+							<p>Loading </p>
+						</div>
+			</div> -->
+			<div  when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element " >
+				
+				<div class="col-md-12">
+					<div id="analysis-bar-left" >
+						<div class=" single-bar" >
+							<div class="row" >
+								<div class="col-md-12" >
+									<h4>{{senderTotalMsg.totalMsg[0]}}/<b>{{totalMsgs}}</b></h4>
+								</div>
+							</div>
+							<div class="row" >
+								<div class="col-md-4">
+									<h4><b>Total Messages</b></h4>
+								</div>
+								<div class="col-md-2 " >
+									<h4><b>{{senderTotalMsg.contribution[0]}}%</b></h4>	
+								</div>
+								<div class="col-md-6" >
+									<div id="progress-bar-base">
+										<div id="bar-left-1" ng-style="filledPartStyle['total-msg-left']"></div>		
+									</div>			  
+								</div>						
+							</div>					
+						</div>
+						<div class=" single-bar" >
+							<div class="row" >
+								<div class="col-md-12">
+									<h4>{{senderTotalMsg.msgLen[0]}}/<b>{{totalMsgLen}}</b></h4>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">								
+									<h4><b>Total letters</b></h4>						
+								</div>
+								<div class="col-md-2 ">
+									<h4><b>{{senderTotalMsg.msgLenContribution[0]}}%</b></h4>		
+								</div>
+								<div class="col-md-6">
+									<div id="progress-bar-base">
+										<div id="bar-left-2" ng-style="filledPartStyle['msg-len-left']"></div>		
+									</div>			  
+								</div>						
+							</div>					
+						</div>
+						<div class=" single-bar" >
+							<div class="row" >
+								<div class="col-md-12">
+									<h4>{{senderTotalMsg.totalWords[0]}}/<b>{{totalWords}}</b></h4>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<h4><b>Total words</b></h4>
+								</div>
+								<div class="col-md-2 ">
+									<h4><b>{{senderTotalMsg.wordsContribution[0]}}%</b></h4>		
+								</div>
+								<div class="col-md-6">
+									<div id="progress-bar-base">
+										<div id="bar-left-3" ng-style="filledPartStyle['total-words-left']"></div>		
+									</div>			  
+								</div>						
+							</div>					
+						</div>	
+					</div>
+					
+					<div id="avatar">
+						<div id="left-half">
+							<!-- <img id="left-half" src="images/MyPhoto.jpg"> -->
+						</div>
+						<div id="right-half">
+						<!-- 	<img id="right-half" src="images/woman.svg"> -->
+						</div>
+					</div>
+					<div id="analysis-bar-right" >
+						<div class=" single-bar" >
+							<div class="row" >
+								<div class="col-md-12" >
+									<h4>{{senderTotalMsg.totalMsg[1]}}/<b>{{totalMsgs}}</b></h4>
+								</div>
+							</div>
+							<div class="row" >
+								<div class="col-md-10" >
+									<div id="progress-bar-base">
+										<div id="bar-right-1" ng-style="filledPartStyle['total-msg-right']"></div>		
+									</div>			  
+								</div>	
+								<div class="col-md-2 " >
+									<h4><b>{{senderTotalMsg.contribution[1]}}%</b></h4>		
+								</div>					
+							</div>					
+						</div>
+						<div class=" single-bar" >
+							<div class="row" >
+								<div class="col-md-12">
+									<h4>{{senderTotalMsg.msgLen[1]}}/<b>{{totalMsgLen}}</b></h4>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-10">
+									<div id="progress-bar-base">
+										<div id="bar-right-2" ng-style="filledPartStyle['msg-len-right']"></div>		
+									</div>			  
+								</div>	
+								<div class="col-md-2 " >
+									<h4><b>{{senderTotalMsg.msgLenContribution[1]}}%</b></h4>	
+								</div>					
+							</div>					
+						</div>
+						<div class=" single-bar" >
+							<div class="row" >
+								<div class="col-md-12">
+									<h4>{{senderTotalMsg.totalWords[1]}}/<b>{{totalWords}}</b></h4>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-10">
+									<div id="progress-bar-base">
+										<div id="bar-right-3" ng-style="filledPartStyle['total-words-right']"></div>		
+									</div>			  
+								</div>	
+								<div class="col-md-2 " >
+									<h4><b>{{senderTotalMsg.wordsContribution[1]}}%</b></h4>	
+								</div>					
+							</div>					
+						</div>	
+					</div>
+					
+				</div>
+				
+			</div>	
+		</div>	
+			<!-- <div class="spacer col-md-12"></div>
+			<div class="spacer col-md-12"></div>
+	 -->
+		<div class="content">
+			<div when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element ">
+				<h2>Average Message Stats</h2>
+				<div class="col-md-4">
+					<h3><b>Avg Msg Len</b></h3>
+					<h4><b>Overall :</b>{{avgMsgLen}}</h4>
+					<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.avgMsgLen[0]}}</h4>
+					<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.avgMsgLen[1]}}</h4>
+					<br>
+					<h3><b>Avg Words Per Msg</b></h3>
+					<h4><b>Overall :</b>{{avgWordsPerMsg}}</h4>
+					<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.avgWordsPerMsg[0]}}</h4>
+					<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.avgWordsPerMsg[1]}}</h4>
+				</div>	
+				<div class="col-md-8">
+					<hi-basic-column-chart title="avg Msg Len & avg words per Msg" category="categories" data="avgChartdata" fetched="isFetchedAvg"></hi-basic-column-chart>			
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element ">
+				<h2>Daily Message Stat</h2>
+				<div class="col-md-8">
+					<hi-combined-chart title="Daily Analysis" category="dayCategories" data="dailyChartdata" fetched="isFetchedDay"></hi-combined-chart>			
+				</div>
+				<div class="col-md-4">
+					<h3><b>Avg Msgs Per Day</b></h3>
+					<h4><b>Overall :</b>{{avgMsgPerDay}}</h4>
+					<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.avgMsgPerDay[0]}}</h4>
+					<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.avgMsgPerDay[1]}}</h4>
+					<br>
+
+					<h3><b>Avg Msg Len Per Day</b></h3>
+					<h4><b>Overall :</b>{{avgMsgLenPerDay}}</h4>
+					<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.avgMsgLenPerDay[0]}}</h4>
+					<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.avgMsgLenPerDay[1]}}</h4>
+					<br>
+					<h3><b>Avg Words Per Day</b></h3>
+					<h4><b>Overall :</b>{{avgWordsPerDay}}</h4>
+					<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.avgWordsPerDay[0]}}</h4>
+					<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.avgWordsPerDay[1]}}</h4>
+				</div>	
+			</div>
+		</div>
+		<div class="content">
+			<div when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element ">
+				<h2>Emoji Usage</h2>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
+							<h3><b>Total Emojis</b></h3>
+							<h4><b>Overall :</b>{{totalEmoji}}</h4>
+							<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.totalEmoji[0]}}({{senderTotalMsg.totalEmojiContribution[0]}}%)</h4>
+							<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.totalEmoji[1]}} ({{senderTotalMsg.totalEmojiContribution[1]}}%)</h4>
+						</div>
+						<div class="col-md-12">
+							<hi-pie-chart title="Total Emojis" data="totalEmojiChart" fetched="isFetchedEmoji"></hi-pie-chart>
+						</div>
+					</div>
+				</div>	
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
+							<hi-bar-chart title="Distinct Emojis" category="['distinct emoji']" data="distinctEmojiChart" fetched="isFetchedDistinctEmoji"></hi-bar-chart>
+						</div>
+						<div class="col-md-12">
+							<h3><b>Distinct Emojis</b></h3>
+							<h4><b>Overall :</b>{{distinctEmoji}}</h4>
+							<h4><b>{{senders[0]}} :</b>{{senderTotalMsg.distinctEmoji[0]}}</h4>
+							<h4><b>{{senders[1]}} :</b>{{senderTotalMsg.distinctEmoji[1]}}</h4>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>		
+		<div class="container">
+			<div when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element ">
+				<h2>Top Emoji</h2>
+				<div class="col-md-6">
+					<div class="col-md-2" ng-repeat="(key,item) in topTotalEmoji">
+						<h2><b>{{key}}</b></h2>
+						<div class="col-md-12" ng-repeat="boob in item" ng-bind-html-unsafe="boob | emoji">
+							
+						</div>
+					
+					</div>	
+				</div>
+				
+				<div class="col-md-12">
+					<hi-stacked-column-3d  fetched="isFetchedTopEmoji" title="Top Emojis" category="topEmojiCategories" data="topTotalEmojiChart" yTitle="amount"></hi-stacked-column-3d>
+				</div>
+			</div>
+		</div>	
+			
+		
+			
+	<!-- </div> -->
+</div>
+
+
+
+
+
+
+
+
+
+<!-- <div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element">
+				<div class="col-md-8  in-shadow">
+					<h2>PMJDY Performance Over Time</h2>
+					<h4>All India,as of Feb 2016</h4>
+					<hi-combined-chart fetched="isReady" ></hi-column-chart>	
+					
+				</div>
+				<div class="col-md-4">
+					<h3><b>no_of_rupay_cards</b> starts from <b>14th, September in 2014</b> goes up to <b>28th, February in 2016</b>. is available weekly.
+					data is missing for <b>14 weeks</b>, <b>4</b> in <b>March, 2015 and</b> <b>3</b> each in <b>May, April, February, 2015</b>, <b>1</b> in <b>August, 2015</b><br><br>
+					<b>no_of_zero_balance_accounts</b> increasing from <b>14th, September in 2014</b> to <b>19th, April in 2015</b>
+					the increase <b>slows down</b> from <b>14th, September in 2014 </b>to <b>19th, April in 2015</b>
+					
+					
+					</h3>	
+				</div>
+		</div>
+		<div class="spacer col-md-12"></div>
+		<div class="row">
+			<div class="col-md-6 in-shadow" >
+				<div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element">
+					<div class="col-md-12 ">
+						<h3>
+							<h3><b>balance_in_acc</b> starts from <b>17th, November in 2014</b> goes up to <b>8th, February in 2016</b>. is available weekly.
+							data is missing for <b>4 weeks</b>, <b>2</b> in <b>Jul, 2015 and</b> <b>1</b> each in <b>Jan, April 2015</b>
+						</h3>
+					</div>
+					<div class="col-md-12 ">
+						<hc-chart category="years" fetched="isReady" heading="Hundreds" data="fuck" ></hc-chart>
+					</div>
+					
+				</div>
+			</div>	
+			<div class="col-md-6 in-shadow" >
+				<div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element">
+					<div class="col-md-12 ">
+						<hc-pie-chart title="wickets Per Year" data="fuck" fetched="isReady" >Placeholder for pie chart</hc-pie-chart>
+					</div>
+					<div class="col-md-12 ">
+						<h3>
+							<h3><b>total_accounts</b> increasing from <b>14th, September in 2014</b> to <b>19th, April in 2015</b>
+							the increase <b>slows down</b> from <b>14th, September in 2014 </b>to <b>19th, April in 2015</b>
+						</h3>
+					</div>
+				</div>
+			</div>	
+			
+			
+		</div>
+		<div class="spacer col-md-12"></div>
+		<div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element in-shadow">
+				<div class="col-md-12  ">
+					<hi-column-chart></hi-column-chart>		
+				</div>
+				<div class="col-md-12">
+					<h3>
+						<b>total_rupay_cards</b>
+							are expected to change around <b>0.37%</b> in the upcoming week from <b>2016-02-28</b> to <b>2016-03-06</b>, changed by <b>0.57%</b> in the last week, <b>1.59%</b> in the last month, <b>4.46%</b> in the last quarter
+					</h3>
+				</div>
+
+		</div>
+ -->	
