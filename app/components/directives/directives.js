@@ -241,7 +241,7 @@ angular.module('whatsappAnalyzer')
                                                 categories: scope.category,
                                                 labels: {
                                                     style: {                                                    
-                                                        fontSize:'35px'
+                                                        fontSize:'5.6vw'
                                                     }
                                                 }
                                             },

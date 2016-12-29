@@ -9,16 +9,18 @@
 			}
 
 			.content {
-			  height:100vh;
-			  min-height:100%;/*for mozilla*/
+			  height:100%;
+			  /*min-height:100%;*//*for mozilla*/
 			  padding: 3%;
+			  
 			}
 
 			html>body .content {
-			  height:100vh;
+			  height:100%;
+			  
 			}		
 		.spacer{
-			height: 100px;
+			height: 6vh;
 		}
 		.rot-90{
 			-ms-transform: rotate(90deg); /* IE 9 */
@@ -165,7 +167,36 @@
           animation: fx 1000ms ease infinite 600ms;
 }
 
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="col-"] {
+        max-width: 100%;
+    }
+    img {
+	    max-width: 100%;
+	    height: auto;
+	}
+	#avatar{
+			float: left;
+			position: relative;
+			width: 10px;
+			height: 80vh;
+			border-radius: 1%;
+			/*border: 2px solid #000;*/
+			z-index: 100;
+			 
 
+		}
+	#progress-bar-base {
+		    position: relative;
+		    margin-top: 3%;
+		    height: 8px;
+		    background-color: grey;
+		    float: left;
+		    width: 100%;
+		    z-index: -100;
+		}
+}
 
 </style>
 
@@ -195,17 +226,17 @@
 						<div class=" single-bar" >
 							<div class="row" >
 								<div class="col-md-12" >
-									<h4>{{senderTotalMsg.totalMsg[0]}}/<b>{{totalMsgs}}</b></h4>
+									<h4><b>Total Messages :</b>{{senderTotalMsg.totalMsg[0]}}/<b>{{totalMsgs}}</b></h4>
 								</div>
 							</div>
 							<div class="row" >
-								<div class="col-md-4">
+								<!-- <div class="col-md-4">
 									<h4><b>Total Messages</b></h4>
-								</div>
-								<div class="col-md-2 " >
+								</div> -->
+								<div class="col-md-4 " >
 									<h4><b>{{senderTotalMsg.contribution[0]}}%</b></h4>	
 								</div>
-								<div class="col-md-6" >
+								<div class="col-md-8" >
 									<div id="progress-bar-base">
 										<div id="bar-left-1" ng-style="filledPartStyle['total-msg-left']"></div>		
 									</div>			  
@@ -215,17 +246,17 @@
 						<div class=" single-bar" >
 							<div class="row" >
 								<div class="col-md-12">
-									<h4>{{senderTotalMsg.msgLen[0]}}/<b>{{totalMsgLen}}</b></h4>
+									<h4><b>Total letters :</b>{{senderTotalMsg.msgLen[0]}}/<b>{{totalMsgLen}}</b></h4>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-4">								
+								<!-- <div class="col-md-4">								
 									<h4><b>Total letters</b></h4>						
-								</div>
-								<div class="col-md-2 ">
+								</div> -->
+								<div class="col-md-4 ">
 									<h4><b>{{senderTotalMsg.msgLenContribution[0]}}%</b></h4>		
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-8">
 									<div id="progress-bar-base">
 										<div id="bar-left-2" ng-style="filledPartStyle['msg-len-left']"></div>		
 									</div>			  
@@ -235,17 +266,17 @@
 						<div class=" single-bar" >
 							<div class="row" >
 								<div class="col-md-12">
-									<h4>{{senderTotalMsg.totalWords[0]}}/<b>{{totalWords}}</b></h4>
+									<h4><b>Total words : </b>{{senderTotalMsg.totalWords[0]}}/<b>{{totalWords}}</b></h4>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-4">
+								<!-- <div class="col-md-4">
 									<h4><b>Total words</b></h4>
-								</div>
-								<div class="col-md-2 ">
+								</div> -->
+								<div class="col-md-4 ">
 									<h4><b>{{senderTotalMsg.wordsContribution[0]}}%</b></h4>		
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-8">
 									<div id="progress-bar-base">
 										<div id="bar-left-3" ng-style="filledPartStyle['total-words-left']"></div>		
 									</div>			  
@@ -266,7 +297,7 @@
 						<div class=" single-bar" >
 							<div class="row" >
 								<div class="col-md-12" >
-									<h4>{{senderTotalMsg.totalMsg[1]}}/<b>{{totalMsgs}}</b></h4>
+									<h4><b>Total Messages :</b>{{senderTotalMsg.totalMsg[1]}}/<b>{{totalMsgs}}</b></h4>
 								</div>
 							</div>
 							<div class="row" >
@@ -283,7 +314,7 @@
 						<div class=" single-bar" >
 							<div class="row" >
 								<div class="col-md-12">
-									<h4>{{senderTotalMsg.msgLen[1]}}/<b>{{totalMsgLen}}</b></h4>
+									<h4><b>Total letters :</b>{{senderTotalMsg.msgLen[1]}}/<b>{{totalMsgLen}}</b></h4>
 								</div>
 							</div>
 							<div class="row">
@@ -300,7 +331,7 @@
 						<div class=" single-bar" >
 							<div class="row" >
 								<div class="col-md-12">
-									<h4>{{senderTotalMsg.totalWords[1]}}/<b>{{totalWords}}</b></h4>
+									<h4><b>Total words : </b>{{senderTotalMsg.totalWords[1]}}/<b>{{totalWords}}</b></h4>
 								</div>
 							</div>
 							<div class="row">
@@ -398,10 +429,10 @@
 				</div>	
 			</div>
 		</div>		
-		<div class="container">
+		<div class="content">
 			<div when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element ">
 				<h2>Top Emoji</h2>
-				<div class="col-md-6">
+				<!-- <div class="col-md-6">
 					<div class="col-md-2" ng-repeat="(key,item) in topTotalEmoji">
 						<h2><b>{{key}}</b></h2>
 						<div class="col-md-12" ng-repeat="boob in item" ng-bind-html-unsafe="boob | emoji">
@@ -410,7 +441,7 @@
 					
 					</div>	
 				</div>
-				
+	 -->			
 				<div class="col-md-12">
 					<hi-stacked-column-3d  fetched="isFetchedTopEmoji" title="Top Emojis" category="topEmojiCategories" data="topTotalEmojiChart" yTitle="amount"></hi-stacked-column-3d>
 				</div>

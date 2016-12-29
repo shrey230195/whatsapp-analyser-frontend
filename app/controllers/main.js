@@ -242,7 +242,7 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 			type:'pie',
 			name:'Avg Msg Per Day',
 			data:[],
-			center: [350, 80],
+			center: ['230vw', '58vh'],
             size: 100,
             showInLegend: false,
             dataLabels: {
