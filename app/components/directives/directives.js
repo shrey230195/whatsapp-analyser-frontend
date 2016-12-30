@@ -217,9 +217,9 @@ angular.module('whatsappAnalyzer')
 
                     },
                     link: function (scope, element) {
-                         scope.$watch('fetched', function(newValue, oldValue) {
-                                console.log(scope.data,scope.category)
-                              if (newValue !== oldValue) {
+                         scope.$watch('fetched', function(newValue, oldValue) {                        
+                              if (newValue) {
+                                console.log('directive',scope.fetched);
                                  if(scope.fetched){
                                          Highcharts.chart(element[0], {
                                             chart: {
@@ -241,7 +241,7 @@ angular.module('whatsappAnalyzer')
                                                 categories: scope.category,
                                                 labels: {
                                                     style: {                                                    
-                                                        fontSize:'5.6vw'
+                                                        fontSize:'3.6vmin'
                                                     }
                                                 }
                                             },
@@ -409,7 +409,9 @@ angular.module('whatsappAnalyzer')
                         fetched:'=fetched'
                     },
                     link: function (scope, element) {
+
                             scope.$watch('fetched', function(newValue, oldValue) { 
+                              
                             if (newValue !== oldValue) {
                                 if(scope.fetched){ 
                                     Highcharts.chart(element[0], {

@@ -166,7 +166,12 @@
   -webkit-animation: fx 1000ms ease infinite 600ms;
           animation: fx 1000ms ease infinite 600ms;
 }
-
+.sender{
+	color:green;
+	font-weight: bold;
+	margin-left: 2%;
+	cursor: pointer;
+}
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     [class*="col-"] {
@@ -442,9 +447,16 @@
 					</div>	
 				</div>
 	 -->			
-				<div class="col-md-12">
+				<div class="col-md-12" ng-if="!(senderTotalMsg.isShownTopEmoji[0]||senderTotalMsg.isShownTopEmoji[1])" >
 					<hi-stacked-column-3d  fetched="isFetchedTopEmoji" title="Top Emojis" category="topEmojiCategories" data="topTotalEmojiChart" yTitle="amount"></hi-stacked-column-3d>
 				</div>
+				<div class="col-md-12" ng-repeat='(key,sender) in senders' ng-if="senderTotalMsg.isShownTopEmoji[key]">
+					<hi-stacked-column-3d  fetched="isFetchedTopEmoji" title="{{sender}}'s Top Emojis" category="senderTotalMsg.topEmojiCategories[key]" data="senderTotalMsg.topTotalEmojiChart[key]" yTitle="amount"></hi-stacked-column-3d>
+				</div>
+				<div class="col-md-12">
+					<p><span class="sender" ng-repeat="sender in senders" ng-click="changeTopEmojiData(sender)">&#9679; {{sender}}</span><span class="sender" ng-click="isTotalClicked()">&#9679; total</span></p>				
+				</div>
+				
 			</div>
 		</div>	
 			

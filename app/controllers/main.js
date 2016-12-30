@@ -19,7 +19,10 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 		'avgWordsPerDay':[],
 		'totalEmoji':[],
 		'totalEmojiContribution':[],
-		'distinctEmoji':[]
+		'distinctEmoji':[],
+		'topEmojiCategories':[],
+		'topTotalEmojiChart':[],
+		'isShownTopEmoji':[],
 	};
 	$scope.avgChartdata=[];
 	$scope.dailyChartdata=[];
@@ -29,7 +32,9 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 	$scope.isFetchedDay=false;
 	$scope.isFetchedEmoji=false;
 	$scope.isFetchedTopEmoji=false;
-	$scope.filledPartStyle = {}
+	$scope.filledPartStyle = {};
+	$scope.isTotal3d=true;
+	$scope.isSender3d=false;
 	// only required for dynamic animations
 	$scope.changeAnimation = function() {
 
@@ -56,9 +61,9 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 	$scope.getParticipants=function(){
 		dataFactory.getParticipants()
 		.then(function(response){
-			console.log(response);
+			
 			$scope.senders=response.data.senders;
-			console.log($scope.senders);
+		
 		},function(error){
 			console.log(error);
 		})
@@ -91,7 +96,6 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 		dataFactory.getTotalMessageStat()
 		.then(function(response) {             
                 $scope.totalMessageStat=response.data;
-       			console.log($scope.totalMessageStat);
        			$scope.totalMsgLen=$scope.totalMessageStat.total_msg_len;
        			$scope.totalWords=$scope.totalMessageStat.total_words;
        			angular.forEach($scope.totalMessageStat.sender.msg_len,function(item,key){
@@ -126,7 +130,6 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 	$scope.getAvgMsgStat=function(){
 		dataFactory.getAvgMsgStat()
 		.then(function(response){
-			console.log(response.data);
 			var avgMsgStat=response.data
 			$scope.avgMsgLen=avgMsgStat.avg_msg_len;
 			$scope.avgWordsPerMsg=avgMsgStat.avg_words_per_msg;
@@ -203,8 +206,16 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 	$scope.getTopEmoji = function(){
 		dataFactory.getTopEmoji()
 		.then(function(response){
+			console.log(response.data);
 			$scope.topTotalEmoji=response.data.total;
-			$scope.prepareTopTotalEmojiChart();
+			$scope.senderTopTotalEmoji=response.data.sender;
+			$scope.topEmojiCategories=$scope.prepareTopTotalEmojiChart($scope.topTotalEmoji)[0];
+			$scope.topTotalEmojiChart=$scope.prepareTopTotalEmojiChart($scope.topTotalEmoji)[1];
+			angular.forEach($scope.senders,function(sender,key){
+				$scope.senderTotalMsg.isShownTopEmoji[key]=false;                			
+                $scope.senderTotalMsg.topEmojiCategories.push($scope.prepareTopTotalEmojiChart($scope.senderTopTotalEmoji[sender])[0]);
+                $scope.senderTotalMsg.topTotalEmojiChart.push($scope.prepareTopTotalEmojiChart($scope.senderTopTotalEmoji[sender])[1])
+            });
 		},function(error){
 			console.log(error);
 		}).finally(function(){
@@ -242,7 +253,7 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 			type:'pie',
 			name:'Avg Msg Per Day',
 			data:[],
-			center: ['230vw', '58vh'],
+			center: ['130vw', '58vh'],
             size: 100,
             showInLegend: false,
             dataLabels: {
@@ -270,7 +281,6 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 		});
 		dailyChartColumnData.push(pieData);
 		angular.extend($scope.dailyChartdata,dailyChartColumnData);
-		console.log($scope.dailyChartdata);
 
 	}
 	$scope.prepareEmojiChart=function(){
@@ -315,29 +325,49 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 			$scope.distinctEmojiChart.push(value);
 		});
 	}
-	$scope.prepareTopTotalEmojiChart=function(){
-		$scope.topEmojiCategories=Object.values($scope.topTotalEmoji.emoji)
-		$scope.topTotalEmojiChart=[];
-		console.log(Object.values($scope.topTotalEmoji.freq));
+	$scope.prepareTopTotalEmojiChart=function(data){
+
+		var topEmojiCategories=Object.values(data.emoji)
+		var topTotalEmojiChart=[];
+		
 		var value={
 			name: 'overall',
-            data: Object.values($scope.topTotalEmoji.freq),
+            data: Object.values(data.freq),
             stack: 'Total'
 		}
-		$scope.topTotalEmojiChart.push(value);
+		topTotalEmojiChart.push(value);
 		angular.forEach($scope.senders,function(item,key){
-			angular.forEach($scope.topTotalEmoji,function(obj,index){
+			angular.forEach(data,function(obj,index){
 				if(item==index){
 					var value={
 						name: item,
 		            	data: Object.values(obj),
 		            	stack:'sender'
 					}
-					$scope.topTotalEmojiChart.push(value);
+					topTotalEmojiChart.push(value);
 				}
 			});
 			
 		});
+
+		return [topEmojiCategories,topTotalEmojiChart];
+	}
+	$scope.changeTopEmojiData=function(sender){
+		angular.forEach($scope.senders,function(send,key){
+				$scope.senderTotalMsg.isShownTopEmoji[key]=false;
+				if(send==sender){
+					$scope.senderTotalMsg.isShownTopEmoji[key]=true;
+				}
+                
+            });
+		
+		
+	};
+	$scope.isTotalClicked=function(){
+		angular.forEach($scope.senders,function(send,key){
+				$scope.senderTotalMsg.isShownTopEmoji[key]=false;
+                
+        });
 	}
 	$scope.getParticipants();
 	$scope.getMessageCount();
