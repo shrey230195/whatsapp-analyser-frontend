@@ -167,7 +167,25 @@
           animation: fx 1000ms ease infinite 600ms;
 }
 .sender{
-	color:green;
+	color:#2a43a8;
+	font-weight: bold;
+	margin-left: 2%;
+	cursor: pointer;
+}
+.type{
+	color:#2f6af7;
+	font-weight: bold;
+	margin-left: 2%;
+	cursor: pointer;
+}
+.sender-clicked{
+	color:#000;
+	font-weight: bold;
+	margin-left: 2%;
+	cursor: pointer;
+}
+.type-clicked{
+	color:#000;
 	font-weight: bold;
 	margin-left: 2%;
 	cursor: pointer;
@@ -437,24 +455,25 @@
 		<div class="content">
 			<div when-visible="animateElementIn" when-not-visible="animateElementOut"  class="not-visible row element ">
 				<h2>Top Emoji</h2>
-				<!-- <div class="col-md-6">
-					<div class="col-md-2" ng-repeat="(key,item) in topTotalEmoji">
+				<div class="col-md-12" ng-if="isEmojiTabular">
+					<div class="col-md-3" ng-repeat="(key,item) in topTotalEmojiData track by $index">
 						<h2><b>{{key}}</b></h2>
-						<div class="col-md-12" ng-repeat="boob in item" ng-bind-html-unsafe="boob | emoji">
-							
+						<div class="col-md-12" ng-repeat="boob in item track by $index">
+							<h3>{{boob}}</h3>
 						</div>
 					
 					</div>	
 				</div>
-	 -->			
-				<div class="col-md-12" ng-if="!(senderTotalMsg.isShownTopEmoji[0]||senderTotalMsg.isShownTopEmoji[1])" >
+				
+				<div class="col-md-12" ng-if="!(senderTotalMsg.isShownTopEmoji[0]||senderTotalMsg.isShownTopEmoji[1])&&isEmojiChart" >
 					<hi-stacked-column-3d  fetched="isFetchedTopEmoji" title="Top Emojis" category="topEmojiCategories" data="topTotalEmojiChart" yTitle="amount"></hi-stacked-column-3d>
 				</div>
-				<div class="col-md-12" ng-repeat='(key,sender) in senders' ng-if="senderTotalMsg.isShownTopEmoji[key]">
+				<div class="col-md-12" ng-repeat='(key,sender) in senders' ng-if="senderTotalMsg.isShownTopEmoji[key]&&isEmojiChart">
 					<hi-stacked-column-3d  fetched="isFetchedTopEmoji" title="{{sender}}'s Top Emojis" category="senderTotalMsg.topEmojiCategories[key]" data="senderTotalMsg.topTotalEmojiChart[key]" yTitle="amount"></hi-stacked-column-3d>
 				</div>
 				<div class="col-md-12">
-					<p><span class="sender" ng-repeat="sender in senders" ng-click="changeTopEmojiData(sender)">&#9679; {{sender}}</span><span class="sender" ng-click="isTotalClicked()">&#9679; total</span></p>				
+					<p><span class="type" ng-click="showTabular()" ng-class="typeClicked[0]">Tabular</span> | <span class="type" ng-click="showChart()" ng-class="typeClicked[1]"> Chart</span></p>
+					<p><span class="sender" ng-repeat="sender in senders" ng-click="changeTopEmojiData(sender)" ng-class="senderClicked[$index]">&#9679; {{sender}}</span><span class="sender" ng-click="isTotalClicked()" ng-class="senderClicked[99]">&#9679; total</span></p>				
 				</div>
 				
 			</div>
@@ -472,67 +491,3 @@
 
 
 
-
-<!-- <div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element">
-				<div class="col-md-8  in-shadow">
-					<h2>PMJDY Performance Over Time</h2>
-					<h4>All India,as of Feb 2016</h4>
-					<hi-combined-chart fetched="isReady" ></hi-column-chart>	
-					
-				</div>
-				<div class="col-md-4">
-					<h3><b>no_of_rupay_cards</b> starts from <b>14th, September in 2014</b> goes up to <b>28th, February in 2016</b>. is available weekly.
-					data is missing for <b>14 weeks</b>, <b>4</b> in <b>March, 2015 and</b> <b>3</b> each in <b>May, April, February, 2015</b>, <b>1</b> in <b>August, 2015</b><br><br>
-					<b>no_of_zero_balance_accounts</b> increasing from <b>14th, September in 2014</b> to <b>19th, April in 2015</b>
-					the increase <b>slows down</b> from <b>14th, September in 2014 </b>to <b>19th, April in 2015</b>
-					
-					
-					</h3>	
-				</div>
-		</div>
-		<div class="spacer col-md-12"></div>
-		<div class="row">
-			<div class="col-md-6 in-shadow" >
-				<div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element">
-					<div class="col-md-12 ">
-						<h3>
-							<h3><b>balance_in_acc</b> starts from <b>17th, November in 2014</b> goes up to <b>8th, February in 2016</b>. is available weekly.
-							data is missing for <b>4 weeks</b>, <b>2</b> in <b>Jul, 2015 and</b> <b>1</b> each in <b>Jan, April 2015</b>
-						</h3>
-					</div>
-					<div class="col-md-12 ">
-						<hc-chart category="years" fetched="isReady" heading="Hundreds" data="fuck" ></hc-chart>
-					</div>
-					
-				</div>
-			</div>	
-			<div class="col-md-6 in-shadow" >
-				<div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element">
-					<div class="col-md-12 ">
-						<hc-pie-chart title="wickets Per Year" data="fuck" fetched="isReady" >Placeholder for pie chart</hc-pie-chart>
-					</div>
-					<div class="col-md-12 ">
-						<h3>
-							<h3><b>total_accounts</b> increasing from <b>14th, September in 2014</b> to <b>19th, April in 2015</b>
-							the increase <b>slows down</b> from <b>14th, September in 2014 </b>to <b>19th, April in 2015</b>
-						</h3>
-					</div>
-				</div>
-			</div>	
-			
-			
-		</div>
-		<div class="spacer col-md-12"></div>
-		<div when-visible="animateElementIn" when-not-visible="animateElementOut" class="row not-visible element in-shadow">
-				<div class="col-md-12  ">
-					<hi-column-chart></hi-column-chart>		
-				</div>
-				<div class="col-md-12">
-					<h3>
-						<b>total_rupay_cards</b>
-							are expected to change around <b>0.37%</b> in the upcoming week from <b>2016-02-28</b> to <b>2016-03-06</b>, changed by <b>0.57%</b> in the last week, <b>1.59%</b> in the last month, <b>4.46%</b> in the last quarter
-					</h3>
-				</div>
-
-		</div>
- -->	

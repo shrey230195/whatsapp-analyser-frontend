@@ -35,6 +35,12 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 	$scope.filledPartStyle = {};
 	$scope.isTotal3d=true;
 	$scope.isSender3d=false;
+	$scope.isEmojiChart=true;
+	$scope.isEmojiTabular=false;
+	$scope.senderClicked=[];
+	$scope.senderClicked[99]='sender-clicked';
+	$scope.typeClicked=[];
+	$scope.typeClicked[1]='type-clicked';
 	// only required for dynamic animations
 	$scope.changeAnimation = function() {
 
@@ -211,6 +217,7 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 			$scope.senderTopTotalEmoji=response.data.sender;
 			$scope.topEmojiCategories=$scope.prepareTopTotalEmojiChart($scope.topTotalEmoji)[0];
 			$scope.topTotalEmojiChart=$scope.prepareTopTotalEmojiChart($scope.topTotalEmoji)[1];
+			$scope.topTotalEmojiData=$scope.topTotalEmoji;
 			angular.forEach($scope.senders,function(sender,key){
 				$scope.senderTotalMsg.isShownTopEmoji[key]=false;                			
                 $scope.senderTotalMsg.topEmojiCategories.push($scope.prepareTopTotalEmojiChart($scope.senderTopTotalEmoji[sender])[0]);
@@ -352,21 +359,53 @@ var whatsappCtrl = function($rootScope, $document, $scope,dataFactory) {
 
 		return [topEmojiCategories,topTotalEmojiChart];
 	}
+	$scope.showTabular=function(){
+		$scope.isEmojiChart=false;
+		$scope.isEmojiTabular=true;
+		$scope.typeClicked.length=0;
+		$scope.typeClicked[0]='type-clicked';
+	}
+	$scope.showChart=function(){
+		$scope.isEmojiChart=true;
+		$scope.isEmojiTabular=false;
+		$scope.typeClicked.length=0;
+		$scope.typeClicked[1]='type-clicked';
+	}
 	$scope.changeTopEmojiData=function(sender){
-		angular.forEach($scope.senders,function(send,key){
-				$scope.senderTotalMsg.isShownTopEmoji[key]=false;
-				if(send==sender){
-					$scope.senderTotalMsg.isShownTopEmoji[key]=true;
-				}
-                
-            });
+		$scope.senderClicked.length=0;
+
+		if($scope.isEmojiChart==true){
+				angular.forEach($scope.senders,function(send,key){
+						console.log(key);
+						$scope.senderTotalMsg.isShownTopEmoji[key]=false;
+						if(send==sender){
+							$scope.senderTotalMsg.isShownTopEmoji[key]=true;
+							$scope.senderClicked[key]='sender-clicked';
+						}
+		                
+		        });
+		}
+		if ($scope.isEmojiTabular==true) {
+			$scope.senderClicked.length=0;
+			angular.forEach($scope.senders,function(send,key){
+						$scope.senderTotalMsg.isShownTopEmoji[key]=false;
+						if(send==sender){
+							$scope.topTotalEmojiData=$scope.senderTopTotalEmoji[send];
+							$scope.senderTotalMsg.isShownTopEmoji[key]=true;
+							$scope.senderClicked[key]='sender-clicked';
+						}
+		                
+		        });
+			console.log('topTotalEmojiData',$scope.topTotalEmojiData);
+		};
 		
 		
 	};
 	$scope.isTotalClicked=function(){
+		$scope.senderClicked.length=0;
+		$scope.senderClicked[99]='sender-clicked';
 		angular.forEach($scope.senders,function(send,key){
-				$scope.senderTotalMsg.isShownTopEmoji[key]=false;
-                
+				$scope.senderTotalMsg.isShownTopEmoji[key]=false;        
         });
 	}
 	$scope.getParticipants();
